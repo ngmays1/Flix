@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 //import {  Container, Row, Col, Form, Dropdown, DropdownButton, InputGroup } from 'react-bootstrap';
 import ShowCard from './ShowCard';
 import { useSelector } from 'react-redux';
@@ -7,7 +7,10 @@ import { faStar as solidStar, faCaretUp, faCaretDown, faGreaterThan, faLessThan}
 import { faStar as emptyStar}  from '@fortawesome/free-regular-svg-icons';
 import {useSpring, useTrail, config, animated} from 'react-spring';
 import useStyles from './styles';
-import { Grid, Box, Table, TableHead, TableRow, TableCell, TableBody, Menu, MenuItem, Button, TextField, Container, Typography } from '@material-ui/core';
+import { Grid, Link, Table, TableHead, TableRow, TableCell, TableBody, Menu, MenuItem, Button, TextField, Container, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { getShows } from '../../actions/shows'
+
 
 function Shows() {
 
@@ -21,8 +24,17 @@ function Shows() {
     const [ratingUp, setRatingUp] = useState(true);
     const [search, setSearch] = useState('');
     const [alpha, setAlpha] = useState(true);
-    const [anchorEl, setAnchorEl] = useState(null);
+    //const [anchorEl, setAnchorEl] = useState(null);
     const [genreLinks, setGenreLinks] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [openMenu, setOpenMenu] = useState(false);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getShows());
+    
+    }, [dispatch])
+
 
 
     const clearAll = () => {
@@ -35,11 +47,12 @@ function Shows() {
     }
 
     const handleClose = () => {
-        setAnchorEl(null);
+        //setAnchorEl(null);
+        setOpenMenu(false);
     }
-    const openMenu = (e) => {
-        setAnchorEl(e.currentTarget);
-    }
+    //const openMenu = (e) => {
+    //    setAnchorEl(e.currentTarget);
+    //}
 
     const fadeIn = useSpring({
         from: { opacity: 0 },
@@ -70,34 +83,50 @@ function Shows() {
             <div>
             <Button 
             className={classes.button}
-            onClick={openMenu}>
+            onClick={() => setOpenMenu(!openMenu)}>
                 {genType}
             </Button>
-                <div className={classes.menu_container}>                    
-            <Menu
-            
-                id='genre-menu'
-                anchorEl={anchorEl}
-                getContentAnchorEl={null}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{ vertical: "top", horizontal: "center" }}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-                {g.map((genre, index) => ((!genre.selected) &&
-                    <MenuItem key={index} onClick={() => setGenre(genre.genre)} name={genre.genre} value={genre.genre}>{genre.genre}</MenuItem>
-                ))}
-            </Menu>
-            </div>
+            {openMenu &&
+            <Container className={classes.info}>  
+                <Grid container className={classes.col}>
+                    {g.map((genre, index) => ((!genre.selected) &&
+                        <Grid item key={index}>
+                        <Link className={classes.desc} onClick={() => setGenre(genre.genre)} >{genre.genre} </Link>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
+            }       
         </div>
         )
     }
 
+    const addTag = tag => {
+        let match = false;
+        tags.forEach(prevTag => {
+            if (tag === prevTag) {
+                match = true;
+                }
+        });
+        if (match === false) {
+            setTags(tags => ({...tags, tag}));
+        } 
+    }
+
+    const removeTags = index => {
+        const newTags= [...tags];
+        newTags.splice(index, 1);
+        setTags(newTags);
+    }
     const FilteredTitles = () => {
         const newdisplay = [];
         shows.forEach(show => {
             if (show.title.toLowerCase().startsWith(search.toLowerCase().slice(0, Math.max(show.title.length - 1, 1)))) {
                 if (show.genre === genType || genType === 'All') {
+                    if (tags === '')
+                    show.tags.forEach(tag => {
+
+                    })
                     if(ascending){
                         if(show.rating >= rating){
                             newdisplay.push(show);
@@ -149,7 +178,7 @@ function Shows() {
             from: { opacity: 0 },
             to: { opacity: 1 }
         });
-        console.log(newdisplay);
+        //console.log(newdisplay);
         return <>
                     {/*trail.map((animation, index) => (
                         <animated.div className='position-relative' style={animation} key={index}>
@@ -161,7 +190,8 @@ function Shows() {
                     {newdisplay.map((show, index) => (                   
                         <ShowCard
                         key={index}
-                        show={show}>
+                        show={show}
+                        addTag={addTag}>
                     </ShowCard>
                     ))}
                 </>
@@ -217,18 +247,30 @@ function Shows() {
                     <TableHead>
                         <TableRow>
                             <TableCell className={classes.cell}>
+                                <Grid container>
+                                <Grid item>
                                     <FontAwesomeIcon className={classes.corner} onClick={() => toggleSorts('alpha')} icon={alphaUp ? faCaretUp : faCaretDown} />
-                                        <Typography variant='h5'>Title</Typography>
-                                        <TextField id='search-bar' type='text' name='title' value={search} placeholder='Search:' onChange={e => setSearch(e.target.value)}/>
+                                        <Typography variant='h5'>Title:  </Typography>
+                                        </Grid>
+                                        <Grid item className={classes.spaceRight}>
+                                            <TextField className={classes.search} id='search-bar' type='text' name='title' value={search} placeholder='Search:' onChange={e => setSearch(e.target.value)}/>
+                                        </Grid>
+                                </Grid>
                                 </TableCell>
                             <TableCell className={classes.cell}>
+                            <Grid container>
+                                <Grid item>
                                     <Typography variant='h5'>Genre</Typography>
+                                </Grid>
+                                <Grid item className={classes.spaceRight}>
                                     <GenreButtons/>
+                                </Grid>
+                            </Grid>
                                 </TableCell>
                             <TableCell className={classes.cell}>
                                     <Typography variant='h5'>Rating</Typography>
                                         <FiveStars/>
-                                        <FontAwesomeIcon className={classes.space} onClick={() => setAscending(!ascending)} icon={ascending ? faGreaterThan : faLessThan}/>
+                                        <FontAwesomeIcon className={classes.spaceLeft} onClick={() => setAscending(!ascending)} icon={ascending ? faGreaterThan : faLessThan}/>
                                         <FontAwesomeIcon className={classes.corner} onClick={() => toggleSorts('rating')} icon={ratingUp ? faCaretUp : faCaretDown} />
                             </TableCell>
                         </TableRow>
@@ -238,6 +280,9 @@ function Shows() {
                     </TableBody>
                 </Table>
                 <Button className={classes.centerButton} onClick={() => clearAll()}>Clear</Button>
+                {tags.map((tag, index) => (
+                    <Typography variant='p' key={index}>{index} </Typography> 
+                ))}
                 </Container>
     )
 }
