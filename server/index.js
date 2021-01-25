@@ -5,16 +5,25 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import showRoutes from './routes/shows.js';
+import loginRoutes from './routes/login.js';
 
 const app = express();
 dotenv.config();
 
 //const cookieParser = require('cookie-parser');
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use('/shows', showRoutes);
+//app.use('/login', loginRoutes);
+
+app.use('/login', (req, res) => {
+    res.send({
+      token: 'test123'
+    });
+  });
+  
 
 app.get('/', (req, res) => {
     res.send("welcome to the shows API");
