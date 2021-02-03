@@ -12,6 +12,22 @@ import { useDispatch } from 'react-redux';
 import { getShows } from '../../actions/shows'
 
 
+function getGenres(shows)  {
+    const genres = [];
+    shows.forEach(show => {
+            genres.push(show.genre)
+        });
+    const genreSelectors = [...new Set(genres)];
+
+    const allGenres = genreSelectors;
+    const g = [];
+    allGenres.forEach((genre) => {
+        g.push({genre:genre, selected:false});
+    });
+    console.log(g);
+    return g
+}
+
 function Shows() {
 
     const shows = useSelector((state) => state.shows);
@@ -25,17 +41,29 @@ function Shows() {
     const [search, setSearch] = useState('');
     const [alpha, setAlpha] = useState(true);
     //const [anchorEl, setAnchorEl] = useState(null);
-    const [genreLinks, setGenreLinks] = useState([]);
+    const [genreLinks, setGenreLinks] = useState(getGenres(shows));
     const [tags, setTags] = useState([]);
-    const [openMenu, setOpenMenu] = useState(false);
+    //const [openMenu, setOpenMenu] = useState(false);
 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getShows());
-    
+        setGenreLinks(getGenres(shows));
+        console.log(getGenres(shows));
     }, [dispatch])
 
 
+    
+    const empt = () => {
+        const test = [];
+        if(test===null) {
+            console.log('not blank')
+        }
+        else {
+            console.log(test);
+        }
+
+    }
 
     const clearAll = () => {
         setGenType('All');
@@ -46,13 +74,9 @@ function Shows() {
         setRatingUp(true);
     }
 
-    const handleClose = () => {
-        //setAnchorEl(null);
+    /*const handleClose = () => {
         setOpenMenu(false);
-    }
-    //const openMenu = (e) => {
-    //    setAnchorEl(e.currentTarget);
-    //}
+    }*/
 
     const fadeIn = useSpring({
         from: { opacity: 0 },
@@ -66,6 +90,33 @@ function Shows() {
         config: config.slow
     });
 
+    const GenreTicker = () => {
+        console.log(genreLinks);
+        const genres = [];
+        shows.forEach(show => {
+                genres.push(show.genre)
+            });
+        const genreSelectors = [...new Set(genres)];
+    
+        const allGenres = genreSelectors;
+        const g = [];
+        allGenres.forEach((genre) => {(genre === genType) ?
+            g.push({genre:genre, selected:true}) :
+            g.push({genre:genre, selected:false});
+        });
+
+        console.log(genreLinks);
+        return (
+            <Container className={classes.ticker}>  
+                    {g.map((genre, index) => ((!genre.selected) &&
+                        <Button key={index} className={classes.tickerbutton} onClick={() => setGenType(genre.genre)} >{genre.genre} </Button>
+                    ))}
+                    <Button className={classes.tickerbutton} onClick={() => setGenType('All')} > All </Button>
+            </Container>
+        )
+    }
+
+    /*
     const GenreButtons = () => {
         const genres = [];
         shows.forEach(show => {
@@ -100,6 +151,7 @@ function Shows() {
         </div>
         )
     }
+    */
 
     const addTag = tag => {
         let match = false;
@@ -112,12 +164,13 @@ function Shows() {
             setTags(tags => ({...tags, tag}));
         } 
     }
-
+/*
     const removeTags = index => {
         const newTags= [...tags];
         newTags.splice(index, 1);
         setTags(newTags);
     }
+    */
     const FilteredTitles = () => {
         const newdisplay = [];
         shows.forEach(show => {
@@ -235,14 +288,16 @@ function Shows() {
                 console.log(item);
             }
         });
+        console.log(genreLinks);
         console.log(genres);
         console.log(selected);
         setGenreLinks(genres);
-        handleClose();
+        //handleClose();
     }
 
     return (
             <Container>
+                <GenreTicker/>        
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
@@ -260,10 +315,10 @@ function Shows() {
                             <TableCell className={classes.cell}>
                             <Grid container>
                                 <Grid item>
-                                    <Typography variant='h5'>Genre</Typography>
+                                    <Typography variant='h5'>{genType}</Typography>
                                 </Grid>
                                 <Grid item className={classes.spaceRight}>
-                                    <GenreButtons/>
+                                    {/*<GenreButtons/>*/}
                                 </Grid>
                             </Grid>
                                 </TableCell>

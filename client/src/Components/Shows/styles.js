@@ -27,6 +27,15 @@ export default makeStyles({
     backgroundColor: 'grey',
     color: 'white',
 
+  },  
+  
+  tickerbutton: {
+    position: 'relative',
+    backgroundColor: 'grey',
+    color: 'white',
+    marginTop: '10px',
+    marginRight: '10px',
+
   },
 
   centerButton: {
@@ -115,6 +124,13 @@ export default makeStyles({
     marginBottom: '5px',
   },
 
+  row: {
+    position: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+
   desc: {
     justifyContent: 'center',
     alignContent: 'center',
@@ -122,16 +138,18 @@ export default makeStyles({
     position: 'relative',
   },
 
-  info: {
-    position: 'absolute',
-    flexDirection: 'column',
-    top: 75,
-    backgroundColor: 'black',
+  ticker: {
+    position: 'relative',
+    flexDirection: 'row',
+    height: '60px',
+    width: '100%',
     color: 'white',
-    opacity: .5,
+    opacity: .75,
     borderRadius: '15px',
-    width: '170px',
-    height: 'full',
+    minWidth: 700,
+    backgroundColor: '#a6a6a6',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 
   whiteButton: {
@@ -139,6 +157,14 @@ export default makeStyles({
     color: 'black',
     margin: '2px',
     zIndex: 1,
+  },
+
+  box: {
+    position: 'absolute',
+    width: 'full',
+    height: 'full',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 
 });

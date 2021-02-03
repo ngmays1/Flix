@@ -34,11 +34,11 @@ function ShowCard({ show, addTag }) {
                 }
                 <Button onClick={() => setShowTags(!showTags)} className={classes.tags}> + </Button>
                 {showTags && 
-                    <TableRow>
+                    <div className={classes.row}>
                         {show.tags.map((tag, index) => (
-                            <Typography onClick={() => addTag(tag)} variant='body2'> #{ tag } </Typography>
+                            <Typography key={index} onClick={() => addTag(tag)} variant='body2'> #{ tag } </Typography>
                         ))}    
-                    </TableRow>}
+                    </div>}
             </TableCell>
             <TableCell className={classes.cell} align='left'>
                 <Typography variant='subtitle1'>{show.genre}</Typography>

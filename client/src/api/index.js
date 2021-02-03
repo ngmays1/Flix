@@ -8,3 +8,7 @@ export const createShow = (newShow) => axios.show(show_url, newShow);
 export const updateShow = (id, updatedShow) => axios.patch(`${show_url}/${id}`, updatedShow);
 export const deleteShow = (id) => axios.delete(`${show_url}/${id}`);
 export const likeShow = (id) => axios.patch(`${show_url}/${id}/likeShow`);
+
+
+const user_url = 'http://localhost:5000/users'
+export const fetchUsers = () => axios.get(user_url);

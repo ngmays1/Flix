@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {Container, AppBar, Typography, Grow, Button, Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import Shows from '../Shows/Shows';
@@ -13,17 +13,23 @@ function App() {
     const { token, setToken } = useToken();
     const classes = useStyles();
 
-    
+   
 /*
+    //const [showing, setShowing] = useState(false);
+    
+    useEffect(() => {
+        console.log(token);
+    }, [token]);
+
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getShows());
     
     }, [dispatch])
-*/
     if(!token) {
     return <Login setToken={setToken} />
   }
+*/
 
 
     return (
@@ -33,11 +39,12 @@ function App() {
                 <Login setToken={setToken}/>
             </AppBar>
 
-            <Grow in>
                 <Container>
-                        <Shows/>
+                {localStorage.length === 1 ?
+                    <Shows/> : 
+                    <h1>Please Log In </h1>
+                }
                 </Container>
-            </Grow>
         </Container>
     )
 }

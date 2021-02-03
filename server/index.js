@@ -5,18 +5,19 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import showRoutes from './routes/shows.js';
-import loginRoutes from './routes/login.js';
-
+//import loginRoutes from './routes/login.js';
+import userRoutes from './routes/user.js';
 const app = express();
 dotenv.config();
 
 //const cookieParser = require('cookie-parser');
 //app.use(cookieParser());
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+//app.use(bodyParser.json({ limit: "30mb", extended: true }));
+//app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use('/shows', showRoutes);
 //app.use('/login', loginRoutes);
+app.use('/users', userRoutes);
 
 app.use('/login', (req, res) => {
     res.send({
