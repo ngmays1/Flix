@@ -100,9 +100,15 @@ function Shows() {
     
         const allGenres = genreSelectors;
         const g = [];
-        allGenres.forEach((genre) => {(genre === genType) ?
-            g.push({genre:genre, selected:true}) :
+        allGenres.forEach((genre) => {
+            if (!genre){
+                console.log('no genre button here');
+            }
+            else if (genre === genType) {
+            g.push({genre:genre, selected:true}) 
+            } else {
             g.push({genre:genre, selected:false});
+        }
         });
 
         console.log(genreLinks);
@@ -173,6 +179,7 @@ function Shows() {
     */
     const FilteredTitles = () => {
         const newdisplay = [];
+        try {
         shows.forEach(show => {
             if (show.title.toLowerCase().startsWith(search.toLowerCase().slice(0, Math.max(show.title.length - 1, 1)))) {
                 if (show.genre === genType || genType === 'All') {
@@ -192,6 +199,9 @@ function Shows() {
                 };       
             }
         }); 
+    } catch (error) {
+        console.log(error);
+    }
         if(alpha){
             if(alphaUp){
                 newdisplay.sort((a, b) => {

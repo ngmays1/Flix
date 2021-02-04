@@ -26,6 +26,35 @@ export const setSesh = async (req, res) => {
     res.json(updatedUser);
 }
 
+export const createUser = async (req, res) => {
+    //const { id } = req.params;
+    //const user = req.body;
+    const user = req.body;
+    const newUser = new User(user);
+
+    try {
+        await newUser.save();
+
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.log(error);
+        //res.status(409).json({ message: error });
+    }
+/*
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        session: ''
+    });
+    try {
+        const savedUser = await user.save();
+        res.json(savedUser);
+    } catch (error) {
+        res.json({ message: error });
+    } */
+}
+
 
 
 

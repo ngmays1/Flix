@@ -3,12 +3,13 @@ import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import {Container, AppBar, Typography, Grow, Button, Grid } from '@material-ui/core';
 import useStyles from '../../styles';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser } from '../../actions/users';
 
 
 export default function Login({ setToken }) {
 
+    const dispatch = useDispatch();
     const classes = useStyles();
 
     const [uname, setUname] = useState();
@@ -44,6 +45,17 @@ export default function Login({ setToken }) {
           .then(data => data.json())
         }
 
+    const login2 = async (creds) => {
+      //e.preventDefault();
+      console.log(creds);
+      try {
+          dispatch(addUser(creds));
+      } catch (error) {
+        console.log(error);
+      }
+      //clear();
+      setShowReg(false);
+    }
 
     const loginCheck = async (creds) => {
       const token = await bcrypt.genSalt(5);
@@ -110,22 +122,22 @@ export default function Login({ setToken }) {
                         {showLogin && 
             <Container className={classes.loginMenu}>
                 <h1>login menu</h1>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(loginCheck)}>
                     <input name='uname' placeholder='username' onChange={(e) => setUname(e.target.value)} ref={register}/>
                     <input name='password' placeholder='Password: ' type='password' onChange={(e) => setPassword(e.target.value)} ref={register}/>
                     <input type='submit'/>
                 </form>
             </Container>    }
-            {/*showReg && 
+            {showReg && 
             <Grid className={classes.regMenu}>
                 <h1>Reg menu</h1>
-                <form onSubmit={handleSubmit(reg)}>
-                    <input name='uname' ref={register}/>
-                    <input name='email' ref={register}/>
-                    <input name='password' type='password' ref={register}/>
+                <form onSubmit={handleSubmit(login2)}>
+                    <input name='username' placeholder='username' ref={register}/>
+                    <input name='email' placeholder='Email' ref={register}/>
+                    <input name='password' placeholder='Password: ' type='password' ref={register}/>
                     <input type='submit'/>
                 </form>
-            </Grid>   */}
+            </Grid>   }
         </div>
         </Container>
     )
