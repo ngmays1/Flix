@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-//import {  Container, Row, Col, Form, Dropdown, DropdownButton, InputGroup } from 'react-bootstrap';
 import ShowCard from './ShowCard';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCaretUp, faCaretDown, faGreaterThan, faLessThan}  from '@fortawesome/free-solid-svg-icons';
 import { faStar as emptyStar}  from '@fortawesome/free-regular-svg-icons';
 import {useSpring, useTrail, config, animated} from 'react-spring';
 import useStyles from './styles';
-import { Grid, Link, Table, TableHead, TableRow, TableCell, TableBody, Menu, MenuItem, Button, TextField, Container, Typography } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField, Container, Typography } from '@material-ui/core';
 import { getShows } from '../../actions/shows'
 
 
@@ -31,6 +29,8 @@ function getGenres(shows)  {
 function Shows() {
 
     const shows = useSelector((state) => state.shows);
+    const users = useSelector((state) => state);
+
     const classes = useStyles();
 
     const [genType, setGenType] = useState('All');
@@ -49,21 +49,9 @@ function Shows() {
     useEffect(() => {
         dispatch(getShows());
         setGenreLinks(getGenres(shows));
-        console.log(getGenres(shows));
+        //console.log(getGenres(shows));
+        console.log(shows);
     }, [dispatch])
-
-
-    
-    const empt = () => {
-        const test = [];
-        if(test===null) {
-            console.log('not blank')
-        }
-        else {
-            console.log(test);
-        }
-
-    }
 
     const clearAll = () => {
         setGenType('All');
@@ -170,13 +158,7 @@ function Shows() {
             setTags(tags => ({...tags, tag}));
         } 
     }
-/*
-    const removeTags = index => {
-        const newTags= [...tags];
-        newTags.splice(index, 1);
-        setTags(newTags);
-    }
-    */
+
     const FilteredTitles = () => {
         const newdisplay = [];
         try {
@@ -348,6 +330,7 @@ function Shows() {
                 {tags.map((tag, index) => (
                     <Typography variant='p' key={index}>{index} </Typography> 
                 ))}
+                <button onClick={() => console.log(users)}>showwwwws</button>
                 </Container>
     )
 }

@@ -14,22 +14,20 @@ export const getUsers = () => async (dispatch) => {
 }
 
 export const addUser = (user) => async (dispatch) => {
-    /*    const user = new User({
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email,
-            session: ''
-        });
-        try {
-            const savedUser = await user.save();
-            res.json(savedUser);
-        } catch (error){
+    try {
+        const { data } = await api.createUser(user);
+        console.log(data);
+        dispatch({ type: CREATE, payload: data });
+    } catch (error) {
         console.log(error);
     }
-    */try {
-        const { data } = await api.createUser(user);
-        console.log(dispatch);
-        dispatch({ type: CREATE, payload: data });
+}
+
+export const updateUser = (user) => async (dispatch) => {
+    try{
+        console.log(user);
+        const { data } = await api.updateSesh(user);
+        dispatch({ type: UPDATE, payload: data });
     } catch (error) {
         console.log(error);
     }

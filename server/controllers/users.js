@@ -29,6 +29,7 @@ export const setSesh = async (req, res) => {
 export const createUser = async (req, res) => {
     //const { id } = req.params;
     //const user = req.body;
+    console.log(req.body);
     const user = req.body;
     const newUser = new User(user);
 
@@ -40,24 +41,31 @@ export const createUser = async (req, res) => {
         console.log(error);
         //res.status(409).json({ message: error });
     }
-/*
-    const user = new User({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        session: ''
-    });
-    try {
-        const savedUser = await user.save();
-        res.json(savedUser);
-    } catch (error) {
-        res.json({ message: error });
-    } */
 }
 
+export const updateUser = async (req, res) => {
+    const { id: _id } = req.params;
+    const user = req.body;
+    console.log(user);
+    console.log(id);
+    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No show with that id');
 
+    const updatedUser = await User.findByIdAndUpdate(_id, { ...user, _id }, { new: true });
 
+    res.json(udpatedUser);
+}
 
+export const updateSesh = async (req, res) => {
+    const { id: _id } = req.params;
+    const session = req.body;
+    console.log(user);
+    console.log(id);
+    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No show with that id');
+
+    const updatedUser = await User.findByIdAndUpdate(_id, { session:session }, { new: true });
+
+    res.json(updatedUser);
+}
 
 export const createLogin = async (req, res) => {
     const show = req.body;

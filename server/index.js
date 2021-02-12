@@ -12,8 +12,8 @@ dotenv.config();
 
 //const cookieParser = require('cookie-parser');
 //app.use(cookieParser());
-//app.use(bodyParser.json({ limit: "30mb", extended: true }));
-//app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use('/shows', showRoutes);
 //app.use('/login', loginRoutes);

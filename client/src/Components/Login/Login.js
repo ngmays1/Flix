@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Container, AppBar, Typography, Grow, Button, Grid } from '@material-ui/core';
 import useStyles from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../../actions/users';
+import { addUser, getUsers } from '../../actions/users';
 
 
 export default function Login({ setToken }) {
@@ -20,6 +20,14 @@ export default function Login({ setToken }) {
     const bcrypt = require('bcryptjs');
     const [session, setSession] = useState(localStorage);
 
+    console.log(useSelector((state) => state.users));
+
+    useEffect(() => {
+      dispatch(getUsers);
+    }, [dispatch])
+
+    const users = useSelector((state) => state.users);
+    //const users = ['jim'];
     const login = async (creds) => {
       console.log(creds);
         return fetch('http://localhost:5000/login', {
@@ -48,13 +56,21 @@ export default function Login({ setToken }) {
     const login2 = async (creds) => {
       //e.preventDefault();
       console.log(creds);
-      try {
+      const thisUser = ({username:creds.username, password:creds.password, email:creds.email, session:'' });
+      //try {
           dispatch(addUser(creds));
-      } catch (error) {
-        console.log(error);
-      }
+          //console.log('action dispatched');
+      //} catch (error) {
+      //  console.log(error);
+      //}
       //clear();
       setShowReg(false);
+    }
+
+    const login3 = async (creds) => {
+      const token = 'a;sdfkj;ejf;a;sdfjk';
+      console.log(users);
+      console.log(dispatch(getUsers));
     }
 
     const loginCheck = async (creds) => {
@@ -116,7 +132,9 @@ export default function Login({ setToken }) {
                 <Button className={classes.loginButton} onClick={() => setShowLogin(!showLogin)}>Login</Button> :
                 <Button className={classes.loginButton} onClick={() => logout()}>Logout</Button> 
               } 
+              {localStorage.length === 0 &&
                 <Button className={classes.loginButton} onClick={() => setShowReg(!showReg)}>Register</Button>
+              }
             </Container>
         <div>
                         {showLogin && 
@@ -139,6 +157,7 @@ export default function Login({ setToken }) {
                 </form>
             </Grid>   }
         </div>
+        <button onClick={login3}>get userssss</button>
         </Container>
     )
 }
