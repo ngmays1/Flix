@@ -1,8 +1,9 @@
-import { FETCH_ALL, CREATE, DELETE, UPDATE } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_USER, CREATE, DELETE, UPDATE } from '../constants/actionTypes';
 
 export default (users = [], action) => {
+    console.log(action);
     switch (action.type) {
-        case FETCH_ALL:
+        case FETCH_USER:
             return action.payload;
         case CREATE:
             return [...users, action.payload];

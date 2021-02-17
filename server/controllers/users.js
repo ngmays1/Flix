@@ -11,17 +11,31 @@ export const getUsers = async (req, res) => {
     } catch (error) {
         res.status(404).json({message: error });
     }
+}
+
+export const getUser = async (req, res) => {
+
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id);
+
+        console.log(user);
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(404).json({message: error });
+    }
 
 }
 
 export const setSesh = async (req, res) => {
     const { id } = req.params;
-    //const user = req.body;
+    const user = req.body;
 
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No post with that id');
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No user with that id');
 
-    const user = await User.findById(id);
-    const updatedUser = await PostMessage.findByIdAndUpdate(id, { session: localStorage.token}, { new: true });
+    //const user = await User.findById(id);
+    const updatedUser = await User.findByIdAndUpdate(id, { ...user, session: localStorage.token}, { new: true });
 
     res.json(updatedUser);
 }

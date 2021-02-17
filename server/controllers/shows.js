@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import ShowMessage from '../models/showMessage.js';
+import Show from '../models/show.js';
 
 export const getShows = async (req, res) => {
     try {
-        const showMessage = await ShowMessage.find();
+        const showMessage = await Show.find();
 
         console.log(showMessage);
 
@@ -17,7 +17,7 @@ export const getShows = async (req, res) => {
 export const createShows = async (req, res) => {
     const show = req.body;
 
-    const newShow = new ShowMessage(show);
+    const newShow = new Show(show);
 
     try {
         await newPost.save();
@@ -34,7 +34,7 @@ export const updateShows = async (req, res) => {
 
     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No show with that id');
 
-    const updatedShow = await ShowMessage.findByIdAndUpdate(_id, { ...show, _id }, { new: true });
+    const updatedShow = await Show.findByIdAndUpdate(_id, { ...show, _id }, { new: true });
 
     res.json(updatedShow);
 }
@@ -44,7 +44,7 @@ export const deleteShow = async (req, res) => {
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No show with that id');
 
-    await ShowMessage.findByIdAndRemove(id);
+    await Show.findByIdAndRemove(id);
 
     res.json({message: 'Post deleted successfully' });
 }
@@ -54,8 +54,8 @@ export const likeShow = async (req, res) => {
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No show with that id');
 
-    const show = await ShowMessage.findById(id);
-    const updatedShow = await ShowMessage.findByIdAndUpdate(id, { likeCount: show.likeCount +1}, { new: true });
+    const show = await Show.findById(id);
+    const updatedShow = await Show.findByIdAndUpdate(id, { likeCount: show.likeCount +1}, { new: true });
 
     res.json(updatedShow)
 }

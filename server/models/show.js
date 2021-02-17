@@ -16,6 +16,6 @@ const showSchema = mongoose.Schema({
     },
 });
 
-const ShowMessage = mongoose.model('shows', showSchema);
+const Show = mongoose.model('shows', showSchema);
 
-export default ShowMessage;
+export default Show;

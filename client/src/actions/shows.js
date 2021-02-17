@@ -1,7 +1,6 @@
 import { FETCH_ALL, CREATE, DELETE, UPDATE } from '../constants/actionTypes';
 import * as api from '../api';
 
-//Action creators > function that returns an action
 export const getShows = () => async (dispatch) => {
     try {
         const { data } = await api.fetchShows();

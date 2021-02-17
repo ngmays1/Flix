@@ -7,7 +7,9 @@ import { faStar as emptyStar}  from '@fortawesome/free-regular-svg-icons';
 import {useSpring, useTrail, config, animated} from 'react-spring';
 import useStyles from './styles';
 import { Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField, Container, Typography } from '@material-ui/core';
-import { getShows } from '../../actions/shows'
+import { getShows } from '../../actions/shows';
+import { getUsers } from '../../actions/users';
+
 
 
 function getGenres(shows)  {
@@ -22,7 +24,7 @@ function getGenres(shows)  {
     allGenres.forEach((genre) => {
         g.push({genre:genre, selected:false});
     });
-    console.log(g);
+    //console.log(g);
     return g
 }
 
@@ -48,9 +50,10 @@ function Shows() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getShows());
+        dispatch(getUsers());
         setGenreLinks(getGenres(shows));
         //console.log(getGenres(shows));
-        console.log(shows);
+        //console.log(shows);
     }, [dispatch])
 
     const clearAll = () => {
@@ -79,7 +82,7 @@ function Shows() {
     });
 
     const GenreTicker = () => {
-        console.log(genreLinks);
+        //console.log(genreLinks);
         const genres = [];
         shows.forEach(show => {
                 genres.push(show.genre)
@@ -99,7 +102,7 @@ function Shows() {
         }
         });
 
-        console.log(genreLinks);
+        //console.log(genreLinks);
         return (
             <Container className={classes.ticker}>  
                     {g.map((genre, index) => ((!genre.selected) &&
@@ -331,6 +334,9 @@ function Shows() {
                     <Typography variant='p' key={index}>{index} </Typography> 
                 ))}
                 <button onClick={() => console.log(users)}>showwwwws</button>
+                
+                <button onClick={() => dispatch('600ef618b3757beae90016c5', )}>showwwwws</button>
+
                 </Container>
     )
 }

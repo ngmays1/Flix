@@ -1,6 +1,7 @@
 import { FETCH_ALL, CREATE, DELETE, UPDATE } from '../constants/actionTypes';
 
 export default (shows = [], action) => {
+    //console.log(shows, action);
     switch (action.type) {
         case FETCH_ALL:
             return action.payload;

@@ -1,26 +1,37 @@
-import React, {useState, useEffect} from 'react';
-import {  Container, Row, Col, Form, Dropdown, DropdownButton, Button, InputGroup } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 import ShowCard from './ShowCard';
-import { useSelector } from 'react-redux';
-//import directoryData from '../data/projectData';
+import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faCaretUp, faCaretDown, faGreaterThan, faLessThan}  from '@fortawesome/free-solid-svg-icons';
 import { faStar as emptyStar}  from '@fortawesome/free-regular-svg-icons';
 import {useSpring, useTrail, config, animated} from 'react-spring';
+import useStyles from './styles';
+import { Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField, Container, Typography } from '@material-ui/core';
+import { getShows } from '../../actions/shows'
 
 
+function getGenres(shows)  {
+    const genres = [];
+    shows.forEach(show => {
+            genres.push(show.genre)
+        });
+    const genreSelectors = [...new Set(genres)];
+
+    const allGenres = genreSelectors;
+    const g = [];
+    allGenres.forEach((genre) => {
+        g.push({genre:genre, selected:false});
+    });
+    console.log(g);
+    return g
+}
 
 function Shows() {
 
-    //next up >>> add more data to have multiple pages for results
-    //allow users to flip through if there's 10+
-    // make titles clickable to get more info... maybe use popup/ alerts
-
-    //for weather, make temp universal
-    //restyle w/ bootstrap
-    //see if you can figure out the country code thing
-
     const shows = useSelector((state) => state.shows);
+    const users = useSelector((state) => state);
+
+    const classes = useStyles();
 
     const [genType, setGenType] = useState('All');
     const [rating, setRating] = useState(1);
@@ -29,13 +40,18 @@ function Shows() {
     const [ratingUp, setRatingUp] = useState(true);
     const [search, setSearch] = useState('');
     const [alpha, setAlpha] = useState(true);
+    //const [anchorEl, setAnchorEl] = useState(null);
+    const [genreLinks, setGenreLinks] = useState(getGenres(shows));
+    const [tags, setTags] = useState([]);
+    //const [openMenu, setOpenMenu] = useState(false);
 
+    const dispatch = useDispatch();
     useEffect(() => {
-        console.log(genType);
-        console.log(search);
-        console.log(rating);
-        console.log(ascending ? 'Ascending' : 'Descending');
-    }, [genType, search, rating, ascending]);
+        dispatch(getShows());
+        setGenreLinks(getGenres(shows));
+        //console.log(getGenres(shows));
+        console.log(shows);
+    }, [dispatch])
 
     const clearAll = () => {
         setGenType('All');
@@ -45,6 +61,11 @@ function Shows() {
         setAlphaUp(false);
         setRatingUp(true);
     }
+
+    /*const handleClose = () => {
+        setOpenMenu(false);
+    }*/
+
     const fadeIn = useSpring({
         from: { opacity: 0 },
         to: { opacity: 1 }
@@ -55,13 +76,99 @@ function Shows() {
         from: {opacity: 0, marginTop: -100, marginBottom: 100},
         to: { opacity: 1, marginTop: 0, marginBottom: 0 },
         config: config.slow
-    })
+    });
+
+    const GenreTicker = () => {
+        console.log(genreLinks);
+        const genres = [];
+        shows.forEach(show => {
+                genres.push(show.genre)
+            });
+        const genreSelectors = [...new Set(genres)];
+    
+        const allGenres = genreSelectors;
+        const g = [];
+        allGenres.forEach((genre) => {
+            if (!genre){
+                console.log('no genre button here');
+            }
+            else if (genre === genType) {
+            g.push({genre:genre, selected:true}) 
+            } else {
+            g.push({genre:genre, selected:false});
+        }
+        });
+
+        console.log(genreLinks);
+        return (
+            <Container className={classes.ticker}>  
+                    {g.map((genre, index) => ((!genre.selected) &&
+                        <Button key={index} className={classes.tickerbutton} onClick={() => setGenType(genre.genre)} >{genre.genre} </Button>
+                    ))}
+                    <Button className={classes.tickerbutton} onClick={() => setGenType('All')} > All </Button>
+            </Container>
+        )
+    }
+
+    /*
+    const GenreButtons = () => {
+        const genres = [];
+        shows.forEach(show => {
+                genres.push(show.genre)
+            });
+        const genreSelectors = [...new Set(genres)];
+    
+        const allGenres = genreSelectors;
+        const g = [];
+        allGenres.forEach((genre) => {
+            g.push({genre:genre, selected:false});
+        });
+
+        return (
+            <div>
+            <Button 
+            className={classes.button}
+            onClick={() => setOpenMenu(!openMenu)}>
+                {genType}
+            </Button>
+            {openMenu &&
+            <Container className={classes.info}>  
+                <Grid container className={classes.col}>
+                    {g.map((genre, index) => ((!genre.selected) &&
+                        <Grid item key={index}>
+                        <Link className={classes.desc} onClick={() => setGenre(genre.genre)} >{genre.genre} </Link>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
+            }       
+        </div>
+        )
+    }
+    */
+
+    const addTag = tag => {
+        let match = false;
+        tags.forEach(prevTag => {
+            if (tag === prevTag) {
+                match = true;
+                }
+        });
+        if (match === false) {
+            setTags(tags => ({...tags, tag}));
+        } 
+    }
 
     const FilteredTitles = () => {
         const newdisplay = [];
+        try {
         shows.forEach(show => {
             if (show.title.toLowerCase().startsWith(search.toLowerCase().slice(0, Math.max(show.title.length - 1, 1)))) {
                 if (show.genre === genType || genType === 'All') {
+                    if (tags === '')
+                    show.tags.forEach(tag => {
+
+                    })
                     if(ascending){
                         if(show.rating >= rating){
                             newdisplay.push(show);
@@ -74,6 +181,9 @@ function Shows() {
                 };       
             }
         }); 
+    } catch (error) {
+        console.log(error);
+    }
         if(alpha){
             if(alphaUp){
                 newdisplay.sort((a, b) => {
@@ -113,16 +223,23 @@ function Shows() {
             from: { opacity: 0 },
             to: { opacity: 1 }
         });
-        console.log(newdisplay);
-        return <Col>
-                    {trail.map((animation, index) => (
-                        <animated.div style={animation} key={index}>
+        //console.log(newdisplay);
+        return <>
+                    {/*trail.map((animation, index) => (
+                        <animated.div className='position-relative' style={animation} key={index}>
                             <ShowCard
                                 show={newdisplay[index]}>
                             </ShowCard>
                         </animated.div>
+                    ))*/}
+                    {newdisplay.map((show, index) => (                   
+                        <ShowCard
+                        key={index}
+                        show={show}
+                        addTag={addTag}>
+                    </ShowCard>
                     ))}
-                </Col>
+                </>
     }
 
     const toggleSorts = (name) => {
@@ -139,22 +256,6 @@ function Shows() {
         console.log(alphaUp, ratingUp);
     }
 
-    const genres = [];
-    shows.forEach(show => {
-            genres.push(show.genre)
-        });
-    const genreSelectors = [...new Set(genres)];
-
-    const allGenres = genreSelectors;
-    //allGenres.push('All');
-    const g = [];
-    allGenres.forEach((genre) => {
-        g.push({genre:genre, selected:false});
-    });
-    const [genreLinks, setGenreLinks] = useState(g);
-
-    
-  
     const FiveStars = () => { return (
         <span className='mt-1'>
             <FontAwesomeIcon icon={rating >= 1 ? solidStar : emptyStar} onClick={() => setRating(1)}/>
@@ -173,76 +274,64 @@ function Shows() {
             if(item.genre === selected){
                 genres.push({genre:item.genre, selected:true});
                 console.log(item.genre);
-                //item.selected=true;
             }
             else{
                 genres.push({genre:item.genre, selected:false});
                 console.log(item);
             }
         });
+        console.log(genreLinks);
         console.log(genres);
         console.log(selected);
         setGenreLinks(genres);
+        //handleClose();
     }
 
     return (
-        <div>
-            <Container className='mb-3'>
-                <animated.div style={flyIn}>
-                    <Row className='justify-content-md-center m-3'>
-                        <InputGroup className='w-25'>
-                        <Form.Control className='m-1' size='sm' type='text' name='title' value={search} placeholder='Search:' onChange={e => setSearch(e.target.value)}/>
-                            <InputGroup.Append>
-                            <Button variant='secondary' onClick={() => clearAll()}>Clear</Button>
-                            </InputGroup.Append>
-                            </InputGroup>
-                    </Row>
-                </animated.div>
-                <Container>
-                <animated.div className='position-relative' style={fadeIn}>
-
-                    <Row>
-                        <Col className="rounded mb-0 block-example border border-dark">
-                            <FontAwesomeIcon className='corner-caret' onClick={() => toggleSorts('alpha')} icon={alphaUp ? faCaretUp : faCaretDown} />
-                            <Row className='m-3 justify-content-md-center'>
-                                <h5>Title</h5>
-                            </Row>
-                        </Col>
-                        <Col className="rounded mb-0 block-example border border-dark">
-                            <Row className='m-1 justify-content-md-center'>
-                                <h5>Genre</h5>
-                            </Row>
-                                <DropdownButton
-                                    variant='secondary'
-                                    className='m-1'
-                                    title={genType}
-                                    >
-                                    {genreLinks.map((genre, index) => ((!genre.selected) &&
-                                        <Dropdown.Item key={index} className='text-light bg-secondary' onSelect={() => setGenre(genre.genre)} name={genre.genre} value={genre.genre}>{genre.genre}</Dropdown.Item>
-                                ))}
-                            </DropdownButton>
-                            
-                        </Col>
-                        <Col className="rounded mb-0 block-example border border-dark">
-                            <Row className='m-1 justify-content-md-center'>
-                                <h5>Rating</h5>
-                                </Row>
-                                <Row className='m-1 ml-4 justify-content-md-center'>
-                                    <FiveStars/>
-                                    <FontAwesomeIcon className='m-2' onClick={() => setAscending(!ascending)} icon={ascending ? faGreaterThan : faLessThan}/>
-                                    <FontAwesomeIcon className='corner-caret' onClick={() => toggleSorts('rating')} icon={ratingUp ? faCaretUp : faCaretDown} />
-                                
-                            </Row>
-                        </Col>
-                    </Row>
-                    </animated.div>
-
-                    <Row>
+            <Container>
+                <GenreTicker/>        
+                <Table className={classes.table}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className={classes.cell}>
+                                <Grid container>
+                                <Grid item>
+                                    <FontAwesomeIcon className={classes.corner} onClick={() => toggleSorts('alpha')} icon={alphaUp ? faCaretUp : faCaretDown} />
+                                        <Typography variant='h5'>Title:  </Typography>
+                                        </Grid>
+                                        <Grid item className={classes.spaceRight}>
+                                            <TextField className={classes.search} id='search-bar' type='text' name='title' value={search} placeholder='Search:' onChange={e => setSearch(e.target.value)}/>
+                                        </Grid>
+                                </Grid>
+                                </TableCell>
+                            <TableCell className={classes.cell}>
+                            <Grid container>
+                                <Grid item>
+                                    <Typography variant='h5'>{genType}</Typography>
+                                </Grid>
+                                <Grid item className={classes.spaceRight}>
+                                    {/*<GenreButtons/>*/}
+                                </Grid>
+                            </Grid>
+                                </TableCell>
+                            <TableCell className={classes.cell}>
+                                    <Typography variant='h5'>Rating</Typography>
+                                        <FiveStars/>
+                                        <FontAwesomeIcon className={classes.spaceLeft} onClick={() => setAscending(!ascending)} icon={ascending ? faGreaterThan : faLessThan}/>
+                                        <FontAwesomeIcon className={classes.corner} onClick={() => toggleSorts('rating')} icon={ratingUp ? faCaretUp : faCaretDown} />
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         <FilteredTitles/>
-                    </Row>
+                    </TableBody>
+                </Table>
+                <Button className={classes.centerButton} onClick={() => clearAll()}>Clear</Button>
+                {tags.map((tag, index) => (
+                    <Typography variant='p' key={index}>{index} </Typography> 
+                ))}
+                <button onClick={() => console.log(users)}>showwwwws</button>
                 </Container>
-            </Container>
-        </div>
     )
 }
 
