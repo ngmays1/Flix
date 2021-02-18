@@ -9,6 +9,7 @@ import useStyles from './styles';
 import { Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField, Container, Typography } from '@material-ui/core';
 import { getShows } from '../../actions/shows';
 import { getUsers } from '../../actions/users';
+import AddShow from './AddShow';
 
 
 
@@ -24,7 +25,6 @@ function getGenres(shows)  {
     allGenres.forEach((genre) => {
         g.push({genre:genre, selected:false});
     });
-    //console.log(g);
     return g
 }
 
@@ -222,11 +222,10 @@ function Shows() {
                     else { return 0 };
                 })}
             }
-        const trail = useTrail(newdisplay.length, {
-            from: { opacity: 0 },
-            to: { opacity: 1 }
-        });
-        //console.log(newdisplay);
+    const trail = useTrail(newdisplay.length, {
+        from: { opacity: 0 },
+        to: { opacity: 1 }
+    });
         return <>
                     {/*trail.map((animation, index) => (
                         <animated.div className='position-relative' style={animation} key={index}>
@@ -268,27 +267,6 @@ function Shows() {
             <FontAwesomeIcon icon={rating >= 5 ? solidStar : emptyStar} onClick={() => setRating(5)}/>
         </span>
     )}
-
-    const setGenre = (selected) => {
-        setGenType(selected);
-        const genres = [];
-        genreLinks.forEach((item) =>  {
-            console.log(item);
-            if(item.genre === selected){
-                genres.push({genre:item.genre, selected:true});
-                console.log(item.genre);
-            }
-            else{
-                genres.push({genre:item.genre, selected:false});
-                console.log(item);
-            }
-        });
-        console.log(genreLinks);
-        console.log(genres);
-        console.log(selected);
-        setGenreLinks(genres);
-        //handleClose();
-    }
 
     return (
             <Container>
@@ -334,9 +312,7 @@ function Shows() {
                     <Typography variant='p' key={index}>{index} </Typography> 
                 ))}
                 <button onClick={() => console.log(users)}>showwwwws</button>
-                
-                <button onClick={() => dispatch('600ef618b3757beae90016c5', )}>showwwwws</button>
-
+                <AddShow/>
                 </Container>
     )
 }

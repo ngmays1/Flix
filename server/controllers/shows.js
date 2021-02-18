@@ -11,6 +11,20 @@ export const getShows = async (req, res) => {
     } catch (error) {
         res.status(404).json({message: error });
     }
+}
+
+export const getShow = async (req, res) => {
+
+    const { id } = req.params;
+    try {
+        const show = await Show.findById(id);
+
+        console.log(show);
+
+        res.status(200).json(show);
+    } catch (error) {
+        res.status(404).json({message: error });
+    }
 
 }
 
@@ -20,7 +34,7 @@ export const createShows = async (req, res) => {
     const newShow = new Show(show);
 
     try {
-        await newPost.save();
+        await newShow.save();
 
         res.status(201).json(newShow);
     } catch (error) {
@@ -28,13 +42,29 @@ export const createShows = async (req, res) => {
     }
 }
 
-export const updateShows = async (req, res) => {
-    const { id: _id } = req.params;
+export const createShow = async (req, res) => {
     const show = req.body;
+
+    const newShow = new Show(show);
+
+    try {
+        await newShow.save();
+
+        res.status(201).json(newShow);
+    } catch (error) {
+        res.status(409).json({ message: error });
+    }
+}
+
+export const updateShow = async (req, res) => {
+    const { id: _id } = req.params;
+    //const show = req.body;
+    const show = req.body;
+    console.log(show);
 
     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No show with that id');
 
-    const updatedShow = await Show.findByIdAndUpdate(_id, { ...show, _id }, { new: true });
+    const updatedShow = await Show.findByIdAndUpdate(_id, { ...show }, { new: true });
 
     res.json(updatedShow);
 }

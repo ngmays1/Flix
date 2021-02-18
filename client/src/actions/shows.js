@@ -14,7 +14,7 @@ export const getShows = () => async (dispatch) => {
 export const createShow = (show) => async (dispatch) => {
     try {
         const { data } = await api.createShow(show);
-
+        console.log(data);
         dispatch({ type: CREATE, payload: data });
     } catch (error) {
         console.log(error);

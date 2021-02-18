@@ -4,10 +4,13 @@ import { faStar as solidStar}  from '@fortawesome/free-solid-svg-icons';
 import { faStar as emptyStar}  from '@fortawesome/free-regular-svg-icons';
 import { Grid, Link, TableRow, TableCell, Typography, Button, Box, Container } from '@material-ui/core';
 import useStyles from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteShow } from '../../actions/shows';
 
 
 function ShowCard({ show, addTag }) {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const [showTags, setShowTags] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
@@ -49,6 +52,7 @@ function ShowCard({ show, addTag }) {
                     <FontAwesomeIcon icon={show.rating >= 3 ? solidStar : emptyStar}/>
                     <FontAwesomeIcon icon={show.rating >= 4 ? solidStar : emptyStar}/>
                     <FontAwesomeIcon icon={show.rating >= 5 ? solidStar : emptyStar}/>
+                    <button onClick={() => dispatch(deleteShow(show._id))}>x</button>
             </TableCell>
         </TableRow>
     )

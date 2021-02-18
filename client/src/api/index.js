@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //const show_url = 'https://blog-tempalte.herokuapp.com/shows';
 const show_url = 'http://localhost:5000/shows';
-const user_url = 'http://localhost:5000/users'
+const user_url = 'http://localhost:5000/users';
 
 export const fetchShows = () => axios.get(show_url);
 export const createShow = (newShow) => axios.post(show_url, newShow);
