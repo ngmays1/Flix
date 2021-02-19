@@ -235,9 +235,8 @@ function Shows() {
                         </animated.div>
                     ))*/}
                     {newdisplay.map((show, index) => ( 
-                        <TableRow>
+                        <TableRow key={index}>
                         <ShowCard
-                        key={index}
                         show={show}
                         addTag={addTag}
                         setShowId={setShowId}>
@@ -322,8 +321,7 @@ function Shows() {
                 ))}
                 <button onClick={() => console.log(users)}>showwwwws</button>
                 <button onClick={() => console.log(showId, show)}>stufffff</button>
-                    <AddShow showId={showId} setShowId={setShowId}/>
-                    <button onClick={() => setShowId(null)}>ClearShowId</button>
+                    <AddShow show={show} setShowId={setShowId}/>
                 </TableContainer>
     )
 }
