@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, DELETE, UPDATE, FETCH_USER } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, DELETE, UPDATE, FETCH_USER, LOGIN } from '../constants/actionTypes';
 import * as api from '../api';
 //import User from '../../../server/models/showUser';
 //const User = require('../../../server/models/showUser');
@@ -42,3 +42,14 @@ export const updateUser = (user) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const login = (creds) => async (dispatch) => {
+    try {
+        const { data } = await api.login(creds);
+        console.log(data);
+        dispatch({ type: LOGIN, payload: data});
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+

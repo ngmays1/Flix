@@ -20,7 +20,7 @@ app.use('/shows', showRoutes);
 //app.use('/login', loginRoutes);
 app.use('/users', userRoutes);
 
-app.use('/login', (req, res) => {
+app.get('/login', (req, res) => {
     res.send({
       token: 'test123'
     });

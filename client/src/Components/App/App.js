@@ -40,9 +40,9 @@ function App() {
             </AppBar>
 
                 <Container>
-                {localStorage.length === 1 ?
-                    <Shows/> : 
-                    <h1>Please Log In </h1>
+                {//localStorage.length === 1 ?
+                    <Shows/>  
+                   //: <h1>Please Log In </h1>
                 }
                 </Container>
         </Container>

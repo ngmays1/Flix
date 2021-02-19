@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 import User from '../models/showUser.js';
+import jwt from 'jsonwebtoken';
+//import dotenv from 'dotenv';
+//dotenv.config();
+
 
 export const getUsers = async (req, res) => {
     try {
@@ -93,4 +97,31 @@ export const createLogin = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: error });
     }
+}
+
+
+export const login = async (req, res) => {
+    const user = req.body;
+    let userfound = null;
+    try {
+        userfound = await User.findOne({username:user.username, password:user.password});
+        //console.log(process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(userfound.toJSON(), process.env.ACCESS_TOKEN_SECRET);
+        console.log(accessToken);
+        res.json({accessToken: accessToken});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token === null ) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userfound) => {
+        if (err) return res.sendStatus(403)
+        req.user = userfound;
+        next();
+    });
 }

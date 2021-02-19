@@ -58,7 +58,6 @@ function AddShow({show, setShowId}) {
 
     return (
         <div>
-            <button onClick={()=>console.log(show)}>show</button>
             {show ? <h1>update show: {show.title}</h1> : <h1>add show</h1> }
             <form onSubmit={handleSubmit(onsubmit)}>
                 <input name='title' placeholder='Title' value={showUpdate.title} onChange={(e) => setShowUpdate({...showUpdate, title:e.target.value})} ref={register({required: 'this field is required'})}/>
