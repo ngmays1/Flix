@@ -9,6 +9,7 @@ export default makeStyles({
     minWidth: 700,
     backgroundColor: '#a6a6a6',
     borderRadius: '15px',
+    maxWidth: '99%'
   },
   row: {
     justifyContent: 'center',
@@ -63,7 +64,13 @@ export default makeStyles({
 
   corner: {
     position: 'absolute',
-    right: 10,
+    right: 30,
+    top: 10,
+  },
+
+  corner2: {
+    position: 'absolute',
+    right: 230,
     top: 10,
   },
 
@@ -166,5 +173,11 @@ export default makeStyles({
     justifyContent: 'center',
     alignContent: 'center',
   },
+
+  floating: {
+    position: 'relative',
+    right: 5,
+    top: 15,
+  }
 
 });

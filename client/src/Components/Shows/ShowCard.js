@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteShow } from '../../actions/shows';
 
 
-function ShowCard({ show, addTag }) {
+function ShowCard({ show, addTag, setShowId }) {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -16,7 +16,7 @@ function ShowCard({ show, addTag }) {
     const [showInfo, setShowInfo] = useState(false);
 
     return (
-        <TableRow>
+        <>
             <TableCell className={classes.cell} align='left'>
                 <Typography onClick={() => setShowInfo(!showInfo)} variant='h6'>{show.title}</Typography>
                 {showInfo &&
@@ -29,7 +29,7 @@ function ShowCard({ show, addTag }) {
                             </Grid>
                             <Grid item>
                                 <Typography variant='body2' className={classes.desc}>
-                                    {"Description:  "+show.description.substring(0, 65) +'...'}
+                                    {"Description:  "+ show.description.length > 66 ? show.description.substring(0, 65) +'...' : show.description}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -52,9 +52,12 @@ function ShowCard({ show, addTag }) {
                     <FontAwesomeIcon icon={show.rating >= 3 ? solidStar : emptyStar}/>
                     <FontAwesomeIcon icon={show.rating >= 4 ? solidStar : emptyStar}/>
                     <FontAwesomeIcon icon={show.rating >= 5 ? solidStar : emptyStar}/>
+                    <div className={classes.floating}>
+                    <button onClick={() => setShowId(show._id)}> ... </button>
                     <button onClick={() => dispatch(deleteShow(show._id))}>x</button>
+                    </div>
             </TableCell>
-        </TableRow>
+        </>
     )
 }
 

@@ -6,12 +6,10 @@ import { faStar as solidStar, faCaretUp, faCaretDown, faGreaterThan, faLessThan}
 import { faStar as emptyStar}  from '@fortawesome/free-regular-svg-icons';
 import {useSpring, useTrail, config, animated} from 'react-spring';
 import useStyles from './styles';
-import { Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField, Container, Typography } from '@material-ui/core';
+import { Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, TextField, Container, Typography, TableContainer, TableFooter, TablePagination } from '@material-ui/core';
 import { getShows } from '../../actions/shows';
 import { getUsers } from '../../actions/users';
 import AddShow from './AddShow';
-
-
 
 function getGenres(shows)  {
     const genres = [];
@@ -42,12 +40,14 @@ function Shows() {
     const [ratingUp, setRatingUp] = useState(true);
     const [search, setSearch] = useState('');
     const [alpha, setAlpha] = useState(true);
-    //const [anchorEl, setAnchorEl] = useState(null);
     const [genreLinks, setGenreLinks] = useState(getGenres(shows));
     const [tags, setTags] = useState([]);
-    //const [openMenu, setOpenMenu] = useState(false);
+    const [showId, setShowId] = useState(null);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    const show = useSelector((state) => showId ? state.shows.find((s) => s._id === showId) : null);
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getShows());
         dispatch(getUsers());
@@ -226,7 +226,7 @@ function Shows() {
         from: { opacity: 0 },
         to: { opacity: 1 }
     });
-        return <>
+        return <TableBody>
                     {/*trail.map((animation, index) => (
                         <animated.div className='position-relative' style={animation} key={index}>
                             <ShowCard
@@ -234,14 +234,17 @@ function Shows() {
                             </ShowCard>
                         </animated.div>
                     ))*/}
-                    {newdisplay.map((show, index) => (                   
+                    {newdisplay.map((show, index) => ( 
+                        <TableRow>
                         <ShowCard
                         key={index}
                         show={show}
-                        addTag={addTag}>
+                        addTag={addTag}
+                        setShowId={setShowId}>
                     </ShowCard>
+                    </TableRow>
                     ))}
-                </>
+                </TableBody>
     }
 
     const toggleSorts = (name) => {
@@ -269,7 +272,7 @@ function Shows() {
     )}
 
     return (
-            <Container>
+            <TableContainer>
                 <GenreTicker/>        
                 <Table className={classes.table}>
                     <TableHead>
@@ -299,21 +302,29 @@ function Shows() {
                                     <Typography variant='h5'>Rating</Typography>
                                         <FiveStars/>
                                         <FontAwesomeIcon className={classes.spaceLeft} onClick={() => setAscending(!ascending)} icon={ascending ? faGreaterThan : faLessThan}/>
-                                        <FontAwesomeIcon className={classes.corner} onClick={() => toggleSorts('rating')} icon={ratingUp ? faCaretUp : faCaretDown} />
+                                        <FontAwesomeIcon className={classes.corner2} onClick={() => toggleSorts('rating')} icon={ratingUp ? faCaretUp : faCaretDown} />
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        <FilteredTitles/>
-                    </TableBody>
+                    <FilteredTitles/>
+                    <TableFooter>
+                        <TableRow>
+                        <Button className={classes.centerButton} onClick={() => clearAll()}>Clear</Button>
+{/*                        
+                        <input type='number' placeHolder={rowsPerPage} onChange={(e) => setRowsPerPage(e.target.value)} />
+                        <TablePagination rowsPerPageOptions={[10, 50]} />
+*/}
+                        </TableRow>
+                    </TableFooter>
                 </Table>
-                <Button className={classes.centerButton} onClick={() => clearAll()}>Clear</Button>
                 {tags.map((tag, index) => (
                     <Typography variant='p' key={index}>{index} </Typography> 
                 ))}
                 <button onClick={() => console.log(users)}>showwwwws</button>
-                <AddShow/>
-                </Container>
+                <button onClick={() => console.log(showId, show)}>stufffff</button>
+                    <AddShow showId={showId} setShowId={setShowId}/>
+                    <button onClick={() => setShowId(null)}>ClearShowId</button>
+                </TableContainer>
     )
 }
 

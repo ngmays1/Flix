@@ -6,6 +6,7 @@ const showSchema = mongoose.Schema({
     genre: String,
     tags: [String],
     image: String,
+    description: String,
     likes: {
         type: Number,
         default: 0
