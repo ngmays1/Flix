@@ -13,6 +13,16 @@ export const getUsers = () => async (dispatch) => {
     }
 }
 
+export const authUser = () => async (dispatch) => {
+    try {
+        const { data } = await api.fetchUsers();
+        console.log(data);
+        dispatch({ type: FETCH_USER, payload: data});
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 export const addUser = (user) => async (dispatch) => {
     try {
         const { data } = await api.createUser(user);

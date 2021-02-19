@@ -53,7 +53,7 @@ function AddShow({show, setShowId}) {
 
     const clear = () => {
         setShowId(null);
-        setShowUpdate({title:'', genre:''});
+        setShowUpdate({title:'', genre:'', rating:1});
     }
 
     return (
