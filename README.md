@@ -3,5 +3,7 @@
 
 # to run
 Declare the database URL and port if different than 5000 in local .env file
-Navigate to the server directory and run using the command 'npm start'
-Once server is running on the specified port navigate to the client directory and run using the command 'npm start'
+In the project directory, navigate to the server directory and run using the command 'npm start'
+Once confirmed the server is running on port 5000 open a second terminal and navigate to the client directory
+With the server still running in the other terminal run the command 'npm start' in the client directory
+Once confirmed the client directory is running on port 3000 navigate to http://localhost:3000 to view the project in your browser
