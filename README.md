@@ -1,7 +1,7 @@
 ﻿# Flix
  Flix is a MERN app allowing user's to search for their favorite movies and TV shows. 
 
-# to run
+# To run
 Declare the database URL and port if different than 5000 in local .env file
 In the project directory, navigate to the server directory and run using the command 'npm start'
 Once confirmed the server is running on port 5000 open a second terminal and navigate to the client directory
