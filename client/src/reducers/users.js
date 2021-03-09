@@ -1,4 +1,4 @@
-import { FETCH_ALL, FETCH_USER, CREATE, DELETE, UPDATE } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_USER, CREATE, DELETE, UPDATE, LOGIN } from '../constants/actionTypes';
 
 export default (users = [], action) => {
     console.log(action);
@@ -10,7 +10,9 @@ export default (users = [], action) => {
         case UPDATE:
             return users.map((user) => user._id === action.payload._id ? action.payload : user);
         case DELETE:
-            return users.filter((user) => user._id !== action.payload )
+            return users.filter((user) => user._id !== action.payload );
+        case LOGIN:
+            return action.payload;
         default:
             return users;
     }

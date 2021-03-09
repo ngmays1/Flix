@@ -308,7 +308,6 @@ function Shows() {
                     <FilteredTitles/>
                     <TableFooter>
                         <TableRow>
-                        <Button className={classes.centerButton} onClick={() => clearAll()}>Clear</Button>
 {/*                        
                         <input type='number' placeHolder={rowsPerPage} onChange={(e) => setRowsPerPage(e.target.value)} />
                         <TablePagination rowsPerPageOptions={[10, 50]} />
@@ -316,11 +315,10 @@ function Shows() {
                         </TableRow>
                     </TableFooter>
                 </Table>
+                <Button className={classes.centerButton} onClick={() => clearAll()}>Clear</Button>
                 {tags.map((tag, index) => (
                     <Typography variant='p' key={index}>{index} </Typography> 
                 ))}
-                <button onClick={() => console.log(users)}>showwwwws</button>
-                <button onClick={() => console.log(showId, show)}>stufffff</button>
                     <AddShow show={show} setShowId={setShowId}/>
                 </TableContainer>
     )

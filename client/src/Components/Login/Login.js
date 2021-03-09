@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import {Container, Button, Grid } from '@material-ui/core';
 import useStyles from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../actions/users';
+import { getUsers, login } from '../../actions/users';
 import { getShows } from '../../actions/shows';
 
 
 export default function Login({ setToken }) {
 
-    const users = useSelector((state) => state.users);
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -24,9 +23,11 @@ export default function Login({ setToken }) {
     //const bcrypt = require('bcryptjs');
 
     useEffect(() => {
+      dispatch(getUsers());
       console.log(checkToken)
-    }, [checkToken])
+    }, [checkToken, dispatch])
 
+    const users = useSelector((state) => state.users);
 
     const registerUser = async (creds) => {
       console.log(creds);
@@ -63,6 +64,12 @@ export default function Login({ setToken }) {
       console.log('check');
     }
 
+      const loggy = async (creds) => {
+        const user = users.find(u => creds.uname === u.username);
+        console.log(user);
+        dispatch(login(user));
+      }
+
     const logout = () => {
       //const token = localStorage.clear();
       setToken('clear');
@@ -84,7 +91,7 @@ export default function Login({ setToken }) {
                         {showLogin && 
             <Container className={classes.loginMenu}>
                 <h1>login menu</h1>
-                <form onSubmit={handleSubmit(loginCheck)}>
+                <form onSubmit={handleSubmit(loggy)}>
                     <input name='uname' placeholder='username' onChange={(e) => setUname(e.target.value)} ref={register}/>
                     <input name='password' placeholder='Password: ' type='password' onChange={(e) => setPassword(e.target.value)} ref={register}/>
                     <input type='submit'/>
