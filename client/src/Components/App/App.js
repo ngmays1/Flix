@@ -36,8 +36,8 @@ function App() {
         <Container maxwidth='lg'>
             <AppBar className={classes.header} position='static' color='inherit'>
                 <Typography variant='h2' align='center'>Shows</Typography>
-                <Login setToken={setToken}/>
-            </AppBar>
+{//                <Login setToken={setToken}/>
+}            </AppBar>
 
                 <Container>
                 {//localStorage.length === 1 ?
