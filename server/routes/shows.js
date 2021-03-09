@@ -5,7 +5,7 @@ import { authenticateToken } from '../controllers/users.js';
 const router = express.Router();
 
 //localhost:5000/Shows
-router.get('/', authenticateToken, getShows ); //tested
+router.get('/', /*authenticateToken,*/ getShows ); //tested
 router.get('/:id', getShow); //tested
 router.post('/', createShow ); //tested
 router.patch('/:id', updateShow); //tested
