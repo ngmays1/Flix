@@ -106,7 +106,7 @@ export const login = async (req, res) => {
     try {
         userfound = await User.findOne({username:user.username, password:user.password});
         //console.log(process.env.ACCESS_TOKEN_SECRET);
-        const accessToken = jwt.sign(userfound.toJSON(), process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(userfound.toJSON(), `${process.env.ACCESS_TOKEN_SECRET}`);
         console.log(accessToken);
         res.json({accessToken: accessToken});
     } catch (error) {
@@ -117,11 +117,13 @@ export const login = async (req, res) => {
 export function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
     if (token === null ) return res.sendStatus(401)
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userfound) => {
+    jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`, (err, userfound) => {
         if (err) return res.sendStatus(403)
         req.user = userfound;
+        console.log('got to next');
         next();
     });
 }

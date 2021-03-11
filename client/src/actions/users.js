@@ -47,7 +47,7 @@ export const login = (creds) => async (dispatch) => {
     try {
         const { data } = await api.login(creds);
         console.log(data);
-        dispatch({ type: LOGIN, payload: data});
+        dispatch({ type: CREATE, payload: data});
     } catch (error) {
         console.log(error.message);
     }

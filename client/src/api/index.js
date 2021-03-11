@@ -14,4 +14,4 @@ export const createUser = (newUser) => axios.post(user_url, newUser);
 export const updateUser = (id, updatedUser) => axios.patch(`${user_url}/${id}`, updatedUser);
 export const updateSesh = (id, updatedSesh) => axios.patch(`${user_url}/${id}`, updatedSesh);
 
-export const login = (creds) => axios.post(user_url, creds)
+export const login = (creds) => axios.post(`${user_url}/login`, creds)

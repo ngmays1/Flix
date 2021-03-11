@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import Show from '../models/show.js';
+import { authenticateToken } from './users.js';
 
-export const getShows = async (req, res) => {
+
+export const getShows = /*(authenticateToken) =>*/ async (req, res) => {
     try {
         const showMessage = await Show.find();
 
