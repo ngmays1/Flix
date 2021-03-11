@@ -68,6 +68,7 @@ export default function Login({ setToken }) {
         const user = users.find(u => creds.uname === u.username);
         console.log(user);
         dispatch(login(user));
+        setShowLogin(false);
       }
 
     const logout = () => {

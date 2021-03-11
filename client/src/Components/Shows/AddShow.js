@@ -5,6 +5,8 @@ import { faStar as solidStar }  from '@fortawesome/free-solid-svg-icons';
 import { faStar as emptyStar }  from '@fortawesome/free-regular-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createShow, updateShow } from '../../actions/shows';
+import { Button } from '@material-ui/core';
+
 
 
 function AddShow({show, setShowId}) {
@@ -69,8 +71,8 @@ function AddShow({show, setShowId}) {
                 {errors.genre && <h5>{errors.genre.message}</h5>
 //              <input name='tags' placeholder='' ref={register}/>
 }               <FiveStars/>
-                <input type='submit'/>   
-                <button onClick={clear}>Clear</button>
+                <Button type='submit'> Submit </Button>   
+                <Button onClick={clear}>Clear</Button>
         </form>
         </div>
     )

@@ -53,8 +53,8 @@ function ShowCard({ show, addTag, setShowId }) {
                     <FontAwesomeIcon icon={show.rating >= 4 ? solidStar : emptyStar}/>
                     <FontAwesomeIcon icon={show.rating >= 5 ? solidStar : emptyStar}/>
                     <div className={classes.floating}>
-                    <button onClick={() => setShowId(show._id)}> ... </button>
-                    <button onClick={() => dispatch(deleteShow(show._id))}>x</button>
+                    <Button onClick={() => setShowId(show._id)}> ... </Button>
+                    <Button onClick={() => dispatch(deleteShow(show._id))}>x</Button>
                     </div>
             </TableCell>
         </>
